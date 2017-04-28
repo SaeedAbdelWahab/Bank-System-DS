@@ -1,0 +1,17 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Debug/vc140.pdb
+/Debug/vc140.idb
+/Debug/Source.obj
+/Debug/Bank.tlog/link.write.1.tlog
+/Debug/Bank.tlog/link.read.1.tlog
+/Debug/Bank.tlog/link.command.1.tlog
+/Debug/Bank.tlog/CL.write.1.tlog
+/Debug/Bank.tlog/CL.read.1.tlog
+/Debug/Bank.tlog/CL.command.1.tlog
+/Debug/Bank.tlog/Bank.lastbuildstate
+/Debug/Bank.log
+/Bank.vcxproj.filters
+/Bank.vcxproj
