@@ -7,8 +7,10 @@
 #include <fstream>
 #define input_client_db "C:\\Users\\Saaid\\Downloads\\DataBases\\clientDB.txt"
 #define input_loan_db "C:\\Users\\Saaid\\Downloads\\DataBases\\loanDB.txt"
+ #define input_history_db "C:\\Users\\Saaid\\Downloads\\DataBases\\historyDB.txt"
 #define output_client_DB "C:\\Users\\Saaid\\Downloads\\DataBases\\outputClient.txt"
 #define output_loan_DB "C:\\Users\\Saaid\\Downloads\\DataBases\\outputLoan.txt"
+#define output_history_DB "C:\\Users\\Saaid\\Downloads\\DataBases\\outputHistory.txt"
 using namespace std;
 
 //class Loan;
@@ -54,13 +56,14 @@ public:  void deposite(float *balance, float amount)
 };
 
 class node_history
-{
+{protected:
 //	node_history * chain;
 	node_history * next;
 //	node_history * tail;
 	vector <string> data;
-	int data_size = data.size();
-public:node_history()
+	int data_size;
+public:
+	node_history()
 {
 //	chain = NULL;
 //	tail = NULL;
@@ -71,20 +74,25 @@ public:node_history()
 //		   chain = NULL;
 //		   tail = NULL;
 		   next = NULL;
-		   data[data_size] = createtime; // time of creation
+		   data.push_back (createtime); // time of creation
+		   data_size = data.size();
 	   }
+
 
 	   node_history(vector<string> info)
 	   {
 
 		   next = NULL;
 		   data = info; 
+		   data_size = data.size();
 	   }
 
 
 
 	   node_history* getNext() { return next; }
 
+	   int getDataSize() { return data_size; }
+	   vector <string> getData() { return data; }
 	   void setNext(node_history * n) { next = n; }
 
 	   friend class history;
@@ -356,7 +364,7 @@ protected:
 		bool   hold;
 
 		clientLoan *clientLoan;			//change "node" to the node type of loan;
-	//	node *clientHistory;		//change "node" to the node type of history;
+		node_history *clientHistory;		//change "node" to the node type of history;
 
 	};
 	clientData clientData;
@@ -733,7 +741,7 @@ class linker {
 protected:
 	Loan loan;
 	Transaction transaction ;
-//	history History;
+	history History;
 	client Client;
 
 public:
@@ -744,13 +752,14 @@ public:
 		clientNode *temp;
 		temp = Client.addb(name, mob, mail, address, job, nationality);
 		temp->clientData.clientLoan = loan.addb();
-		//temp->clientData.clientHistory= History.addb();
+		temp->clientData.clientHistory= History.addb();
 	}
 
 	void listDBimport() {
-		ifstream in, in2;
+		ifstream in, in2,in3;
 		in.open(input_client_db);
 		in2.open(input_loan_db);
+		in3.open(input_history_db);
 		int ID = -1;
 		string name;
 		string mob;
@@ -759,6 +768,7 @@ public:
 		string job;
 		string nationality;
 		float loans;
+		int data_size;
 		bool   have_loan;
 		bool   hold = 0;
 		int i = 0;
@@ -779,15 +789,28 @@ public:
 			temps = Client.addbFile(ID, name, mob, mail, address, job, nationality, have_loan, hold);
 			in2 >> loans;
 			temps->clientData.clientLoan = loan.addb(loans);
+			in3 >> data_size;
+			vector<string> info;
+			for (int j = 0; j < data_size; j++) {
+				string line;
+				in3 >> line;
+				info.push_back(line);
+
+			}
+			temps->clientData.clientHistory = History.addb(info);
 			in.ignore();
 			
 		}
 		in.close();
 		in2.close();
+		
 	}
 	void listDBexport() {
+		vector <string> info;
+		int data_size;
 		ofstream out(output_client_DB);
 		ofstream out2(output_loan_DB);
+		ofstream out3(output_history_DB);
 		clientNode * temp = Client.getchain();
 		while (temp != NULL) {
 			out << temp->clientData.ID << "\t";
@@ -800,6 +823,13 @@ public:
 			out << temp->getHaveLoan() << "\t";
 			out << temp->getHold() << "\n";
 			out2 << temp->clientData.clientLoan->getLoan() << "\n" ;
+			info = temp->clientData.clientHistory->getData();
+			data_size = temp->clientData.clientHistory->getDataSize();
+			out3 << data_size << "\n";
+
+			for (int i = 0; i < data_size; i++) {
+				out3 << info[i] << "\n";
+			}
 			temp = temp->next;
 		}
 	}
