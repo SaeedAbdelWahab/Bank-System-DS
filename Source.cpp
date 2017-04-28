@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include<cmath>
 #include <ctime>
@@ -706,7 +707,7 @@ class linker {
 protected:
 	Loan loan;
 	Transaction transaction ;
-	history History;
+//	history History;
 	client Client;
 
 public:
@@ -786,9 +787,8 @@ void main() {
 	//client.listDBexport();
 	linker L;
 	L.listDBimport();
+	L.addClient("Ahmed", "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true);
 	L.listDBexport();
 	cout << "Done =)" << "\n";
 	system("pause");
 }
-
-//test//
