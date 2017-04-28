@@ -59,6 +59,7 @@ class node_history
 	node_history * next;
 //	node_history * tail;
 	vector <string> data;
+	int data_size = data.size();
 public:node_history()
 {
 //	chain = NULL;
@@ -70,9 +71,15 @@ public:node_history()
 //		   chain = NULL;
 //		   tail = NULL;
 		   next = NULL;
-		   data[0] = createtime; // time of creation
+		   data[data_size] = createtime; // time of creation
 	   }
 
+	   node_history(vector<string> info)
+	   {
+
+		   next = NULL;
+		   data = info; 
+	   }
 
 
 
@@ -128,9 +135,28 @@ public: history() { chain = NULL; }
 
 			}
 
+			return tail;
+		}
+
+		node_history * addb(vector<string> info) {
+			if (chain == NULL)
+			{
+				node_history *temp = new node_history( info);
+				temp->setNext(chain);
+				chain = temp;
+				tail = chain;
+
+			}
+			else {
+				node_history *temp = tail;
+				tail->next = new node_history(info);
+				tail = tail->next;
+
+			}
 
 			return tail;
 		}
+
 
 		void newDeposit(node_history *client, float amount, float balanceAfter)
 		{
