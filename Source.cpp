@@ -231,11 +231,6 @@ public: history() { chain = NULL; }
 		}
 
 
-
-
-
-
-
 };
 
 
@@ -481,7 +476,7 @@ protected:
 	clientNode * tail = chain;
 	clientNode * rootPtr = NULL;
 	int size = 0;													//contain list size
-	int currentID = 0;											//have the current ID (is used to be increased and assign the new value to the new client)
+	int currentID;							//have the current ID (is used to be increased and assign the new value to the new client)
 
 	clientNode *getchain() { return chain; }							//returns list head
 	clientNode *gettail() { return tail; }							//returns list tail
@@ -516,25 +511,55 @@ protected:
 		}
 		else {
 			tail->next = new clientNode(currentID++, name, mob);
-			temp->clientData.ID = currentID++;
+			temp->clientData.ID = currentID;
 			//temp->clientData.clientHistory	= History.addf();	 //calls history's addb which returns its pointer;
 			tail = tail->next;
 		}
 		size++;
 	}
 
+	//search client by ID <as a list>
+	clientNode	*searchByID(int id) {
+		for (clientNode *temp = chain; temp->next != NULL; temp = temp->next)
+			if (temp->clientData.ID == id)
+				return temp;
+		return NULL;
+
+	}
+	
+
+	bool findID(int id){
+		
+		
+		if (searchByID(id)==NULL) {
+			//cout << "ID notfound";
+			return false;
+		}
+		else return true;
+	}
 	//add client <by all data> to the front of list
 	clientNode *addb(string name, string mob, string mail, string address, string job, string nationality) {										//add element to the back of list
 		clientNode * temp = tail;
 		if (chain == NULL) {
-			chain = new clientNode(currentID++, name, mob, mail, address, job, nationality);
-			temp->clientData.ID = currentID++;
+
+			while (findID(currentID))
+				currentID++;
+			chain = new clientNode(currentID, name, mob, mail, address, job, nationality);
+			temp->clientData.ID = currentID;
 			tail = chain;
 			return chain;
 		}
 		else {
-			tail->next = new clientNode(currentID++, name, mob, mail, address, job, nationality);
-			temp->clientData.ID = currentID++;
+			
+			//cout << currentID;
+			while (findID(currentID)) {
+				currentID++;
+				//x= findID(currentID);
+				//cout << currentID;
+			}
+			tail->next = new clientNode(currentID, name, mob, mail, address, job, nationality);
+			temp->clientData.ID = currentID;
+			currentID++;
 			tail = tail->next;
 			return tail;
 		}
@@ -569,17 +594,13 @@ protected:
 		printall(chain);
 		cout << endl;
 	}
-	//search client by ID <as a list>
-	clientNode	*searchByID(int id) {
-		for (clientNode *temp = chain; temp->next != NULL; temp = temp->next)
-			if (temp->clientData.ID == id)
-				return temp;
-	}
+	
 	//search client by name <as a list>
 	clientNode *searchByName(string name) {
 		for (clientNode *temp = chain; temp->next != NULL; temp = temp->next)
 			if (temp->clientData.name == name)
 				return temp;
+		return NULL;
 	}
 	//add client by ID <as a binary tree>(sorted)
 	void treeAddByID(string type, int id, string name, string mob, string mail, string address, string job, string nationality) {
@@ -743,6 +764,7 @@ protected:
 	Transaction transaction ;
 	history History;
 	client Client;
+public: clientNode *currentClient;
 
 public:
 
@@ -754,7 +776,18 @@ public:
 		temp->clientData.clientLoan = loan.addb();
 		temp->clientData.clientHistory= History.addb();
 	}
-
+	void loginClient(string name) {
+	
+		
+		if (Client.searchByName(name) == NULL) {
+			cout << "user not found";
+			currentClient = NULL;
+			return;
+		}
+		currentClient= Client.searchByName(name);
+	
+	
+	}
 	void listDBimport() {
 		ifstream in, in2,in3;
 		in.open(input_client_db);
@@ -803,8 +836,10 @@ public:
 		}
 		in.close();
 		in2.close();
+		in3.close();
 		
 	}
+	
 	void listDBexport() {
 		vector <string> info;
 		int data_size;
@@ -843,7 +878,18 @@ void main() {
 	//client.listDBexport();
 	linker L;
 	L.listDBimport();
-	L.addClient("Ahmed", "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true);
+	//L.searchid(8);
+	
+	L.addClient("Ahmed1", "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true);
+	L.addClient("Ahmed2", "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true);
+	L.addClient("Ahmed2", "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true);
+	L.addClient("Ahmed2", "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true);
+	string name;
+	cin >> name;
+	L.loginClient(name);
+	if(L.currentClient != NULL)
+		cout << L.currentClient->getID();
+	
 	L.listDBexport();
 	cout << "Done =)" << "\n";
 	system("pause");
