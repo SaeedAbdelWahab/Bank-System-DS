@@ -354,6 +354,7 @@ protected:
 		string address;
 		string job;
 		string nationality;
+		string password;
 		float  balance;
 		bool   loan;
 		bool   hold;
@@ -367,15 +368,9 @@ protected:
 	clientNode *left, *right; //in case of tree usaging;
 public:
 	//clientNode constructor start....
-	clientNode(int id, string name, string mob) {
-		clientData.ID = id;
-		clientData.name = name;
-		clientData.mob = mob;
-		next = NULL;
 
-	}
 
-	clientNode(int id, string name, string mob, string mail, string address, string job, string nationality) {
+	clientNode(int id, string name, string mob, string mail, string address, string job, string nationality,string password) {
 		clientData.ID = id;
 		clientData.name = name;
 		clientData.mob = mob;
@@ -383,6 +378,7 @@ public:
 		clientData.address = address;
 		clientData.job = job;
 		clientData.nationality = nationality;
+		clientData.password = password;
 
 		next = NULL;
 
@@ -395,6 +391,7 @@ protected:
 	void setName(string name) { clientData.name = name; }
 	void setMob(string mob) { clientData.mob = mob; }
 	void setMail(string mail) { clientData.mail = mail; }
+	void setPassword(string password) { clientData.password = password; }
 	void setJob(string job) { clientData.job = job; }
 	void setAddress(string address) { clientData.address = address; }
 	void setNationality(string nationality) { clientData.nationality = nationality; }
@@ -408,6 +405,7 @@ protected:
 
 	//clientNode getters start....
 	int	   getID() { return clientData.ID; }
+	string getPassword() { return clientData.password; }
 	string getName() { return clientData.name; }
 	string getMob() { return clientData.mob; }
 	string getMail() { return clientData.mail; }
@@ -435,6 +433,7 @@ protected:
 		cout << getJob() << "\t";
 		cout << getHaveLoan() << "\t";
 		cout << getHold() << "\n";
+	
 
 	}
 	//print in file
@@ -483,40 +482,12 @@ protected:
 	bool isEmpty() { return (chain == NULL) ? true : false; }	//check if list is empty
 
 																//add client <by only name and mob> to the front of list
-	void addf(string name, string mob) {
-		clientNode * temp = new clientNode(currentID++, name, mob);
-		temp->setNext(chain);
-		//temp->clientData.clientHistory	= History.addf();	 //calls history's addf which returns its pointer;
-		chain = temp;
-		size++;
-	}
 
-	//add client <by all data> to the front of list
-	void addf(string name, string mob, string mail, string address, string job, string nationality) {										//add element to the front of list
-		clientNode * temp = new clientNode(currentID++, name, mob, mail, address, job, nationality);
-		temp->setNext(chain);
-		//temp->clientData.clientHistory	= History.addf();	 //calls history's addf which returns its pointer;
-		chain = temp;
-		size++;
-	}
+
+
 
 	//add element to the back of list
-	void addb(string name, string mob) {
-		clientNode * temp = tail;
-		if (chain == NULL) {
-			chain = new clientNode(currentID++, name, mob);
-			temp->clientData.ID = currentID++;
-			//temp->clientData.clientHistory	= History.addf();	 //calls history's which returns its pointer;
-			tail = chain;
-		}
-		else {
-			tail->next = new clientNode(currentID++, name, mob);
-			temp->clientData.ID = currentID;
-			//temp->clientData.clientHistory	= History.addf();	 //calls history's addb which returns its pointer;
-			tail = tail->next;
-		}
-		size++;
-	}
+	
 
 	//search client by ID <as a list>
 	clientNode	*searchByID(int id) {
@@ -538,13 +509,13 @@ protected:
 		else return true;
 	}
 	//add client <by all data> to the front of list
-	clientNode *addb(string name, string mob, string mail, string address, string job, string nationality) {										//add element to the back of list
+	clientNode *addb(string name, string mob, string mail, string address, string job, string nationality,string password) {										//add element to the back of list
 		clientNode * temp = tail;
 		if (chain == NULL) {
 
 			while (findID(currentID))
 				currentID++;
-			chain = new clientNode(currentID, name, mob, mail, address, job, nationality);
+			chain = new clientNode(currentID, name, mob, mail, address, job, nationality,password);
 			temp->clientData.ID = currentID;
 			tail = chain;
 			return chain;
@@ -557,7 +528,7 @@ protected:
 				//x= findID(currentID);
 				//cout << currentID;
 			}
-			tail->next = new clientNode(currentID, name, mob, mail, address, job, nationality);
+			tail->next = new clientNode(currentID, name, mob, mail, address, job, nationality,password);
 			temp->clientData.ID = currentID;
 			currentID++;
 			tail = tail->next;
@@ -566,10 +537,10 @@ protected:
 		size++;
 	}
 	//add to back <from DB version>
-	clientNode * addbFile(int id, string name, string mob, string mail, string address, string job, string nationality, bool Loan, bool Hold) {										//add element to the back of list
+	clientNode * addbFile(int id, string name, string mob, string mail, string address, string job, string nationality, bool Loan, bool Hold,string password) {										//add element to the back of list
 		clientNode * temp = tail;
 		if (chain == NULL) {
-			chain = new clientNode(id, name, mob, mail, address, job, nationality);
+			chain = new clientNode(id, name, mob, mail, address, job, nationality,password);
 			tail = chain;
 			chain->clientData.loan = Loan;
 			chain->clientData.hold = Hold;
@@ -578,7 +549,7 @@ protected:
 			return chain;
 		}
 		else {
-			tail->next = new clientNode(id, name, mob, mail, address, job, nationality);
+			tail->next = new clientNode(id, name, mob, mail, address, job, nationality,password);
 
 			//temp->clientData.ID = id;
 															  //temp->clientData.clientHistory	 = History.addf();    //calls history's addb which returns its pointer;
@@ -603,9 +574,9 @@ protected:
 		return NULL;
 	}
 	//add client by ID <as a binary tree>(sorted)
-	void treeAddByID(string type, int id, string name, string mob, string mail, string address, string job, string nationality) {
+	void treeAddByID(string type, int id, string name, string mob, string mail, string address, string job, string nationality,string password) {
 
-		if (isEmpty()) { rootPtr = new clientNode(id, name, mob, mail, address, job, nationality); }
+		if (isEmpty()) { rootPtr = new clientNode(id, name, mob, mail, address, job, nationality,password); }
 
 		clientNode *p = rootPtr;
 
@@ -619,7 +590,7 @@ protected:
 
 				if (p->getLeft() == NULL) {
 
-					clientNode *newNodePtr = new clientNode(id, name, mob, mail, address, job, nationality);
+					clientNode *newNodePtr = new clientNode(id, name, mob, mail, address, job, nationality,password);
 
 					p->setLeft(newNodePtr);
 				}
@@ -631,7 +602,7 @@ protected:
 
 				if (p->getRight() == NULL) {
 
-					clientNode *newNodePtr = new clientNode(id, name, mob, mail, address, job, nationality);
+					clientNode *newNodePtr = new clientNode(id, name, mob, mail, address, job, nationality,password);
 
 					p->setRight(newNodePtr);
 				}
@@ -643,9 +614,9 @@ protected:
 
 	};
 	//add client by name <as a binary tree>(sorted)
-	void treeAddByName(string type, int id, string name, string mob, string mail, string address, string job, string nationality) {
+	void treeAddByName(string type, int id, string name, string mob, string mail, string address, string job, string nationality,string password) {
 
-		if (isEmpty()) { rootPtr = new clientNode(id, name, mob, mail, address, job, nationality); }
+		if (isEmpty()) { rootPtr = new clientNode(id, name, mob, mail, address, job, nationality,password); }
 
 		clientNode *p = rootPtr;
 
@@ -659,7 +630,7 @@ protected:
 
 				if (p->getLeft() == NULL) {
 
-					clientNode *newNodePtr = new clientNode(id, name, mob, mail, address, job, nationality);
+					clientNode *newNodePtr = new clientNode(id, name, mob, mail, address, job, nationality,password);
 
 					p->setLeft(newNodePtr);
 				}
@@ -671,7 +642,7 @@ protected:
 
 				if (p->getRight() == NULL) {
 
-					clientNode *newNodePtr = new clientNode(id, name, mob, mail, address, job, nationality);
+					clientNode *newNodePtr = new clientNode(id, name, mob, mail, address, job, nationality,password);
 
 					p->setRight(newNodePtr);
 				}
@@ -770,23 +741,47 @@ public:
 
 	linker() {}; //unused constructor
 
-	void addClient(string name, string mob, string mail, string address, string job, string nationality, bool Loan, bool Hold) {
+	void addClient(string name, string mob, string mail, string address, string job, string nationality, bool Loan, bool Hold,string password) {
 		clientNode *temp;
-		temp = Client.addb(name, mob, mail, address, job, nationality);
+		temp = Client.addb(name, mob, mail, address, job, nationality,password);
 		temp->clientData.clientLoan = loan.addb();
 		temp->clientData.clientHistory= History.addb();
 	}
-	void loginClient(string name) {
-	
-		
+	void loginClient() {
+		string name, passwords;
+		bool nameCheck = false;
+		bool passwordCheck = false;
+		cout << "Please enter your user name : ";
+		cin >> name;
 		if (Client.searchByName(name) == NULL) {
-			cout << "user not found";
-			currentClient = NULL;
-			return;
+			while (!nameCheck) {
+				cout << "user not found.Please try again" << endl;
+				cout << "Please enter your user name : ";
+				cin >> name;
+				if (Client.searchByName(name) != NULL) nameCheck = true;
+			}
+			
 		}
+		
 		currentClient= Client.searchByName(name);
-	
-	
+		cout << "Password : ";
+		cin >> passwords;
+		if (currentClient->clientData.password == passwords) {
+			cout << "Welcome =)" << endl;
+		}
+		else { 
+			while (!passwordCheck) {
+				cout << "Wrong password " << name << ".Please Try again" << endl;
+				cout << "Password : ";
+				cin >> passwords;
+				if (currentClient->clientData.password == passwords) { 
+					passwordCheck = true;
+					cout << "Welcome =)" << endl;
+				}
+			}
+		}
+
+
 	}
 	void listDBimport() {
 		ifstream in, in2,in3;
@@ -800,6 +795,7 @@ public:
 		string address;
 		string job;
 		string nationality;
+		string password;
 		float loans;
 		int data_size;
 		bool   have_loan;
@@ -816,10 +812,11 @@ public:
 			in >> nationality;
 			in >> have_loan;
 			in >> hold;
+			in >> password;
 
 			if (temp == ID)break;
 			clientNode *temps;
-			temps = Client.addbFile(ID, name, mob, mail, address, job, nationality, have_loan, hold);
+			temps = Client.addbFile(ID, name, mob, mail, address, job, nationality, have_loan, hold,password);
 			in2 >> loans;
 			temps->clientData.clientLoan = loan.addb(loans);
 			in3 >> data_size;
@@ -856,7 +853,8 @@ public:
 			out << temp->getJob() << "\t";
 			out << temp->getNationality() << "\t";
 			out << temp->getHaveLoan() << "\t";
-			out << temp->getHold() << "\n";
+			out << temp->getHold() << "\t";
+			out << temp->getPassword()<< "\n";
 			out2 << temp->clientData.clientLoan->getLoan() << "\n" ;
 			info = temp->clientData.clientHistory->getData();
 			data_size = temp->clientData.clientHistory->getDataSize();
@@ -880,17 +878,16 @@ void main() {
 	L.listDBimport();
 	//L.searchid(8);
 	
-	L.addClient("Ahmed1", "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true);
-	L.addClient("Ahmed2", "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true);
-	L.addClient("Ahmed2", "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true);
-	L.addClient("Ahmed2", "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true);
-	string name;
-	cin >> name;
-	L.loginClient(name);
-	if(L.currentClient != NULL)
-		cout << L.currentClient->getID();
+	L.addClient("Ahmed1", "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true,"546464");
+	L.addClient("Ahmed2", "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true,"5646464");
+	L.addClient("Ahmed2", "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true,"64646464");
+	L.addClient("Ahmed2", "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true,"2121212");
+
+
+	L.loginClient();
+
 	
 	L.listDBexport();
-	cout << "Done =)" << "\n";
+//	cout << "Done =)" << "\n";
 	system("pause");
 }
