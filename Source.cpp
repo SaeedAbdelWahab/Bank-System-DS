@@ -6,12 +6,14 @@
 #include<string>
 #include <fstream>
 #include <stdlib.h>
-#define input_client_db "C:\\Users\\Saaid\\Downloads\\DataBases\\clientDB.txt"
-#define input_loan_db "C:\\Users\\Saaid\\Downloads\\DataBases\\loanDB.txt"
- #define input_history_db "C:\\Users\\Saaid\\Downloads\\DataBases\\historyDB.txt"
-#define output_client_DB "C:\\Users\\Saaid\\Downloads\\DataBases\\outputClient.txt"
-#define output_loan_DB "C:\\Users\\Saaid\\Downloads\\DataBases\\outputLoan.txt"
-#define output_history_DB "C:\\Users\\Saaid\\Downloads\\DataBases\\outputHistory.txt"
+#include <conio.h>
+#define input_client_db "D:\\banking system\\DataBases\\clientDB.txt"
+#define input_loan_db "D:\\banking system\\DataBases\\loanDB.txt"
+#define teller_db "D:\\banking system\\DataBases\\tellerDB.txt"
+#define input_history_db "D:\\banking system\\DataBases\\historyDB.txt"
+#define output_client_DB "D:\\banking system\\DataBases\\outputClient.txt"
+#define output_loan_DB "D:\\banking system\\DataBases\\outputLoan.txt"
+#define output_history_DB "D:\\banking system\\DataBases\\outputHistory.txt"
 using namespace std;
 
 //class Loan;
@@ -42,7 +44,7 @@ public:  void deposit(float *balance, float amount)
 		 bool transaction(float *From_Balance, float *To_Balance, float amount)
 		 {
 			 bool flag;
-			 if (amount> *From_Balance) return flag = false;
+			 if (amount > *From_Balance) return flag = false;
 			 else {
 				 withdraw(From_Balance, amount);
 				 deposit(To_Balance, amount);
@@ -57,46 +59,47 @@ public:  void deposit(float *balance, float amount)
 };
 
 class node_history
-{protected:
-//	node_history * chain;
+{
+protected:
+	//	node_history * chain;
 	node_history * next;
-//	node_history * tail;
+	//	node_history * tail;
 	vector <string> data;
 	int data_size;
 public:
 	node_history()
-{
-//	chain = NULL;
-//	tail = NULL;
-	next = NULL;
-}
-	   node_history(string createtime)
-	   {
-//		   chain = NULL;
-//		   tail = NULL;
-		   next = NULL;
-		   data.push_back (createtime); // time of creation
-		   data_size = data.size();
-	   }
+	{
+		//	chain = NULL;
+		//	tail = NULL;
+		next = NULL;
+	}
+	node_history(string createtime)
+	{
+		//		   chain = NULL;
+		//		   tail = NULL;
+		next = NULL;
+		data.push_back(createtime); // time of creation
+		data_size = data.size();
+	}
 
 
-	   node_history(vector<string> info)
-	   {
+	node_history(vector<string> info)
+	{
 
-		   next = NULL;
-		   data = info; 
-		   data_size = data.size();
-	   }
+		next = NULL;
+		data = info;
+		data_size = data.size();
+	}
 
 
 
-	   node_history* getNext() { return next; }
+	node_history* getNext() { return next; }
 
-	   int getDataSize() { return data.size(); }
-	   vector <string> getData() { return data; }
-	   void setNext(node_history * n) { next = n; }
+	int getDataSize() { return data.size(); }
+	vector <string> getData() { return data; }
+	void setNext(node_history * n) { next = n; }
 
-	   friend class history;
+	friend class history;
 
 
 
@@ -123,7 +126,7 @@ public: history() { chain = NULL; }
 			string timeS1 = to_string(now->tm_hour);
 			string x = ":00";
 			string time2 = "New account created at time : ";
-			string timeS = time2 + timeS1+x;
+			string timeS = time2 + timeS1 + x;
 			if (chain == NULL)
 			{
 				node_history *temp = new node_history(timeS);
@@ -145,7 +148,7 @@ public: history() { chain = NULL; }
 		node_history * addb(vector<string> info) {
 			if (chain == NULL)
 			{
-				node_history *temp = new node_history( info);
+				node_history *temp = new node_history(info);
 				temp->setNext(chain);
 				chain = temp;
 				tail = chain;
@@ -173,7 +176,7 @@ public: history() { chain = NULL; }
 			string secondSent = " and balance become= ";
 			string at = " at ";
 
-			string trans = firstSent + amountString + secondSent + balance + at + timeS+x;
+			string trans = firstSent + amountString + secondSent + balance + at + timeS + x;
 			ptr->data.push_back(trans);
 		}
 
@@ -188,7 +191,7 @@ public: history() { chain = NULL; }
 			string at = " at ";
 			string x = ":00";
 
-			string trans = firstSent + amountString + secondSent + balance + at + timeS+x;
+			string trans = firstSent + amountString + secondSent + balance + at + timeS + x;
 			ptr->data.push_back(trans);
 		}
 
@@ -198,10 +201,10 @@ public: history() { chain = NULL; }
 			string amountString = to_string(amount);
 			string timeS = to_string(now->tm_hour);
 			string firstSent = "transaction done by amount :";
-			string secondSentence = " to "; 
+			string secondSentence = " to ";
 			string at = " at ";
 			string x = ":00";
-			string trans = firstSent + amountString + secondSentence + name + at + timeS+x;
+			string trans = firstSent + amountString + secondSentence + name + at + timeS + x;
 			ptr->data.push_back(trans);
 		}
 
@@ -216,7 +219,7 @@ public: history() { chain = NULL; }
 			string firstSent = "Loan done by amount :";
 			string at = " at ";
 			string x = ":00";
-			string trans = firstSent + loanString + at + timeS+x;
+			string trans = firstSent + loanString + at + timeS + x;
 			ptr->data.push_back(trans);
 
 		}
@@ -371,7 +374,7 @@ public:
 	//clientNode constructor start....
 
 
-	clientNode(int id, string name,float balance,string mob, string mail, string address, string job, string nationality,string password) {
+	clientNode(int id, string name, float balance, string mob, string mail, string address, string job, string nationality, string password) {
 		clientData.ID = id;
 		clientData.name = name;
 		clientData.mob = mob;
@@ -436,7 +439,7 @@ protected:
 		cout << getJob() << "\t";
 		cout << getHaveLoan() << "\t";
 		cout << getHold() << "\n";
-	
+
 
 	}
 	//print in file
@@ -490,60 +493,60 @@ protected:
 
 
 	//add element to the back of list
-	
+
 
 	//search client by ID <as a list>
 	clientNode	*searchByID(int id) {
-		for (clientNode *temp = chain; temp->next != NULL; temp = temp->next)
+		for (clientNode *temp = chain; temp != NULL; temp = temp->next)
 			if (temp->clientData.ID == id)
 				return temp;
 		return NULL;
 
 	}
-	
 
-	bool findID(int id){
-		
-		
-		if (searchByID(id)==NULL) {
+
+	bool findID(int id) {
+
+
+		if (searchByID(id) == NULL) {
 			//cout << "ID notfound";
 			return false;
 		}
 		else return true;
 	}
 	//add client <by all data> to the front of list
-	clientNode *addb(string name,float balance, string mob, string mail, string address, string job, string nationality,string password) {										//add element to the back of list
+
+	clientNode *addb(string name, float balance, string mob, string mail, string address, string job, string nationality, string password) {										//add element to the back of list
 		clientNode * temp = tail;
 		if (chain == NULL) {
 
 			while (findID(currentID))
-				currentID++;
-			chain = new clientNode(currentID, name,balance, mob, mail, address, job, nationality,password);
-			temp->clientData.ID = currentID;
+				++currentID;
+			chain = new clientNode(currentID, name, balance, mob, mail, address, job, nationality, password);
+			//temp->clientData.ID = currentID;
 			tail = chain;
 			return chain;
 		}
 		else {
-			
+
 			//cout << currentID;
 			while (findID(currentID)) {
-				currentID++;
+				++currentID;
 				//x= findID(currentID);
 				//cout << currentID;
 			}
-			tail->next = new clientNode(currentID, name,balance, mob, mail, address, job, nationality,password);
-			temp->clientData.ID = currentID;
-			currentID++;
+			tail->next = new clientNode(currentID, name, balance, mob, mail, address, job, nationality, password);
 			tail = tail->next;
+			//temp->clientData.ID = currentID;
 			return tail;
 		}
 		size++;
 	}
 	//add to back <from DB version>
-	clientNode * addbFile(int id, string name,float balance, string mob, string mail, string address, string job, string nationality, bool Loan, bool Hold,string password) {										//add element to the back of list
+	clientNode * addbFile(int id, string name, float balance, string mob, string mail, string address, string job, string nationality, bool Loan, bool Hold, string password) {										//add element to the back of list
 		clientNode * temp = tail;
 		if (chain == NULL) {
-			chain = new clientNode(id, name,balance, mob, mail, address, job, nationality,password);
+			chain = new clientNode(id, name, balance, mob, mail, address, job, nationality, password);
 			tail = chain;
 			chain->clientData.loan = Loan;
 			chain->clientData.hold = Hold;
@@ -552,11 +555,12 @@ protected:
 			return chain;
 		}
 		else {
-			tail->next = new clientNode(id, name,balance, mob, mail, address, job, nationality,password);
+			tail->next = new clientNode(id, name, balance, mob, mail, address, job, nationality, password);
 
 			//temp->clientData.ID = id;
 															  //temp->clientData.clientHistory	 = History.addf();    //calls history's addb which returns its pointer;
 			tail = tail->next;
+			//tail->clientData.ID = currentID;
 			tail->clientData.loan = Loan;
 			tail->clientData.hold = Hold;
 			return tail;
@@ -568,18 +572,18 @@ protected:
 		printall(chain);
 		cout << endl;
 	}
-	
+
 	//search client by name <as a list>
 	clientNode *searchByName(string name) {
-		for (clientNode *temp = chain; temp->next != NULL; temp = temp->next)
+		for (clientNode *temp = chain; temp != NULL; temp = temp->next)
 			if (temp->clientData.name == name)
 				return temp;
 		return NULL;
 	}
 	//add client by ID <as a binary tree>(sorted)
-	void treeAddByID(string type, int id, string name,float balance, string mob, string mail, string address, string job, string nationality,string password) {
+	void treeAddByID(string type, int id, string name, float balance, string mob, string mail, string address, string job, string nationality, string password) {
 
-		if (isEmpty()) { rootPtr = new clientNode(id, name,balance, mob, mail, address, job, nationality,password); }
+		if (isEmpty()) { rootPtr = new clientNode(id, name, balance, mob, mail, address, job, nationality, password); }
 
 		clientNode *p = rootPtr;
 
@@ -593,7 +597,7 @@ protected:
 
 				if (p->getLeft() == NULL) {
 
-					clientNode *newNodePtr = new clientNode(id, name,balance, mob, mail, address, job, nationality,password);
+					clientNode *newNodePtr = new clientNode(id, name, balance, mob, mail, address, job, nationality, password);
 
 					p->setLeft(newNodePtr);
 				}
@@ -605,7 +609,7 @@ protected:
 
 				if (p->getRight() == NULL) {
 
-					clientNode *newNodePtr = new clientNode(id, name,balance, mob, mail, address, job, nationality,password);
+					clientNode *newNodePtr = new clientNode(id, name, balance, mob, mail, address, job, nationality, password);
 
 					p->setRight(newNodePtr);
 				}
@@ -617,9 +621,9 @@ protected:
 
 	};
 	//add client by name <as a binary tree>(sorted)
-	void treeAddByName(string type, int id, string name,float balance, string mob, string mail, string address, string job, string nationality,string password) {
+	void treeAddByName(string type, int id, string name, float balance, string mob, string mail, string address, string job, string nationality, string password) {
 
-		if (isEmpty()) { rootPtr = new clientNode(id, name,balance, mob, mail, address, job, nationality,password); }
+		if (isEmpty()) { rootPtr = new clientNode(id, name, balance, mob, mail, address, job, nationality, password); }
 
 		clientNode *p = rootPtr;
 
@@ -633,7 +637,7 @@ protected:
 
 				if (p->getLeft() == NULL) {
 
-					clientNode *newNodePtr = new clientNode(id, name,balance, mob, mail, address, job, nationality,password);
+					clientNode *newNodePtr = new clientNode(id, name, balance, mob, mail, address, job, nationality, password);
 
 					p->setLeft(newNodePtr);
 				}
@@ -645,7 +649,7 @@ protected:
 
 				if (p->getRight() == NULL) {
 
-					clientNode *newNodePtr = new clientNode(id, name,balance, mob, mail, address, job, nationality,password);
+					clientNode *newNodePtr = new clientNode(id, name, balance, mob, mail, address, job, nationality, password);
 
 					p->setRight(newNodePtr);
 				}
@@ -735,8 +739,9 @@ class linker {
 
 protected:
 	Loan loan;
-	Transaction transaction ;
+public: Transaction transaction;
 	history History;
+	bool teller = false;
 	client Client;
 public: clientNode *currentClient;
 
@@ -744,14 +749,15 @@ public:
 
 	linker() {}; //unused constructor
 
-	void addClient(string name,float balance, string mob, string mail, string address, string job, string nationality, bool Loan, bool Hold,string password) {
+	void addClient(string name, float balance, string mob, string mail, string address, string job, string nationality, bool Loan, bool Hold, string password) {
 		clientNode *temp;
-		temp = Client.addb(name,balance, mob,mail, address, job, nationality,password);
+		temp = Client.addb(name, balance, mob, mail, address, job, nationality, password);
 		temp->clientData.clientLoan = loan.addb();
-		temp->clientData.clientHistory= History.addb();
+		temp->clientData.clientHistory = History.addb();
 	}
 
 	void loginClient() {
+		
 		string name, passwords;
 		bool nameCheck = false;
 		bool passwordCheck = false;
@@ -764,22 +770,21 @@ public:
 				cin >> name;
 				if (Client.searchByName(name) != NULL) nameCheck = true;
 			}
-			
-			
+
 		}
-		
-		currentClient= Client.searchByName(name);
+
+		currentClient = Client.searchByName(name);
 		cout << "Password : ";
 		cin >> passwords;
 		if (currentClient->clientData.password == passwords) {
 			cout << "Welcome =)" << endl;
 		}
-		else { 
+		else {
 			while (!passwordCheck) {
 				cout << "Wrong password " << name << ".Please Try again" << endl;
 				cout << "Password : ";
 				cin >> passwords;
-				if (currentClient->clientData.password == passwords) { 
+				if (currentClient->clientData.password == passwords) {
 					passwordCheck = true;
 					cout << "Welcome =)" << endl;
 				}
@@ -789,8 +794,42 @@ public:
 
 	}
 
+
+	bool tellerLogin() {
+		cout << " Please enter your name then your password\n";
+		string name, password;
+		cin >> name >> password;
+		ifstream in(teller_db);
+		bool done = false;
+		string inName, inPassword;
+		while (!in.eof()) {
+			in >> inName;
+			in >> inPassword;
+
+			if (name == inName&&password == inPassword)
+			{
+				done = true;
+				break;
+			}
+			in.ignore();
+		}
+		if (done) {
+			teller = true;
+			return done;
+		}
+		else {
+			cout << "Sorry, Wrong Access! " << endl << " Please try again...\n" << endl;
+			return tellerLogin();
+		}
+
+	}
+
+	clientNode* searchListByName(string name) {
+		return Client.searchByName(name);
+	}
+
 	void listDBimport() {
-		ifstream in, in2,in3;
+		ifstream in, in2, in3;
 		in.open(input_client_db);
 		in2.open(input_loan_db);
 		in3.open(input_history_db);
@@ -824,31 +863,33 @@ public:
 
 			if (temp == ID)break;
 			clientNode *temps;
-			temps = Client.addbFile(ID, name,balance, mob, mail, address, job, nationality, have_loan, hold,password);
+			temps = Client.addbFile(ID, name, balance, mob, mail, address, job, nationality, have_loan, hold, password);
 			in2 >> loans;
 			temps->clientData.clientLoan = loan.addb(loans);
-			string dataa;
-			getline(in3, dataa);
-			data_size = stoi(dataa);
+			in3 >> data_size;
 			vector<string> info;
-			string line;
 			for (int j = 0; j < data_size; j++) {
-				//in3.ignore();
-				getline(in3,line);
-				cout << line;
+				string line;
+				in3 >> line;
 				info.push_back(line);
 
 			}
 			temps->clientData.clientHistory = History.addb(info);
 			in.ignore();
-			
+
 		}
 		in.close();
 		in2.close();
 		in3.close();
-		
+
 	}
-	
+	/*clientNode* searchListByName(string name) {
+		return Client.searchByName(name);
+	}*/
+	clientNode* searchListByID(int id) {
+		return Client.searchByID(id);
+	}
+
 	void listDBexport() {
 		vector <string> info;
 		int data_size;
@@ -857,6 +898,7 @@ public:
 		ofstream out3(output_history_DB);
 		clientNode * temp = Client.getchain();
 		while (temp != NULL) {
+			out.clear();
 			out << temp->clientData.ID << "\t";
 			out << temp->getName() << "\t";
 			out << temp->getBalance() << "\t";
@@ -867,11 +909,10 @@ public:
 			out << temp->getNationality() << "\t";
 			out << temp->getHaveLoan() << "\t";
 			out << temp->getHold() << "\t";
-			out << temp->getPassword()<< "\n";
-			out2 << temp->clientData.clientLoan->getLoan() << "\n" ;
+			out << temp->getPassword() << "\n";
+			out2 << temp->clientData.clientLoan->getLoan() << "\n";
 			info = temp->clientData.clientHistory->getData();
 			data_size = temp->clientData.clientHistory->getDataSize();
-			//cout << data_size;			
 			out3 << data_size << "\n";
 
 			for (int i = 0; i < data_size; i++) {
@@ -887,11 +928,11 @@ public:
 	{
 	ClientEntry:
 		cout << endl << endl;
-		cout << "Kindly choose the number of the operation you want to make: " << endl << " 1) Withdraw an amount. " << endl <<" 2) Deposit to your account"<<endl<< " 3) Make a Transaction. " << endl << " 4) View Your Balance"
+		cout << "Kindly choose the number of the operation you want to make: " << endl << " 1) Withdraw an amount. " << endl << " 2) Deposit to your account" << endl << " 3) Make a Transaction. " << endl << " 4) View Your Balance"
 			<< endl << " 5) Query about your loan. " << endl << " 6) View your History. " << endl << " 7) Logout. " << endl;
 
 		char opNum;
-		cin >> opNum;
+		opNum=_getch();
 		string tryAgain;
 		string to_client;
 		switch (opNum) {
@@ -903,9 +944,9 @@ public:
 			cin >> amount;
 			bool valid = transaction.withdraw(&currentClient->clientData.balance, amount);
 
-			if (valid) { 
+			if (valid) {
 				History.newWithDraw(currentClient->clientData.clientHistory, amount, currentClient->clientData.balance);
-				cout << " Currently your balance is: " << currentClient->getBalance() <<" L.E" << endl << "If you want to return back to the main page press(B)" << endl;
+				cout << " Currently your balance is: " << currentClient->getBalance() << " L.E" << endl << "If you want to return back to the main page press(B)" << endl;
 			}
 			else cout << " Unfortunately, you can't withdraw this amount. If you want to try another amount press (Y) " << endl << " Else to return back to the main page press (B)" << endl;
 
@@ -921,30 +962,30 @@ public:
 			}
 			//system("CLS");
 		}
-			break;
+				break;
 
 		case '2':
-		{	
+		{
 			float amount;
 			cout << " Please enter the amount you want to deposit: " << "\t";
 			cin >> amount;
-			
+
 			transaction.deposit(&currentClient->clientData.balance, amount);
-				
+
 			History.newDeposit(currentClient->clientData.clientHistory, amount, currentClient->clientData.balance);
-			 cout << " Currently your balance is: " << currentClient->getBalance() <<" L.E"<< endl << "If you want to return back to the main page press(B)" << endl;
+			cout << " Currently your balance is: " << currentClient->getBalance() << " L.E" << endl << "If you want to return back to the main page press(B)" << endl;
 
 
 			cin >> tryAgain;
 
-			
-		 if (tryAgain == "B") 
-			 system("CLS"); {
+
+			if (tryAgain == "B")
+				system("CLS"); {
 				goto ClientEntry;
 			}
 		}
-				break;
-	
+		break;
+
 		case '3':
 		{   label2:
 			bool TransactionValid;
@@ -952,7 +993,7 @@ public:
 			float BalanceOfFirstUser = currentClient->getBalance();
 
 			cout << "Please enter the name of the client you want to transfer an amount to: " << "\t";
-			Label3:
+		Label3:
 			cin >> to_client;
 			clientNode *otherClient;
 			otherClient = Client.searchByName(to_client);
@@ -968,7 +1009,7 @@ public:
 			TransactionValid = transaction.transaction(&currentClient->clientData.balance, &otherClient->clientData.balance, amount1);
 			if (TransactionValid) {
 				History.newTrans(currentClient->clientData.clientHistory, amount1, to_client);
-				cout << "Your transaction is done Successfully! " << endl <<"If you want to return back to the main page press(B)" << endl;
+				cout << "Your transaction is done Successfully! " << endl << "If you want to return back to the main page press(B)" << endl;
 			}
 			else {
 				cout << " Sorry, this transaction can't be done! The amount you've entered is more than your current balance." << endl << " If you want to try again press (Y) "
@@ -984,10 +1025,10 @@ public:
 				goto ClientEntry;
 			}
 		}
-			break;
+				break;
 
 		case '4':
-		{cout << " Your current balance is: " << currentClient->getBalance() <<"L.E"<< endl << " If you want to return back to the main page press (B)" << endl;
+		{cout << " Your current balance is: " << currentClient->getBalance() << endl << " If you want to return back to the main page press (B)" << endl;
 
 		cin >> tryAgain;
 
@@ -997,21 +1038,20 @@ public:
 		}}
 		break;
 
-	    case '5':
-		{	float loanData = currentClient->clientData.clientLoan->getLoan(); 
+		case '5':
+		{	float loanData = currentClient->clientData.clientLoan->getLoan();
 		cout << "Your current Loan is: " << loanData << " L.E" << endl;
-		History.newLoan(currentClient->clientData.clientHistory, loanData);
-		    cout << " If you want to return back to the main page press (B)" << endl;
-	    	cin >> tryAgain;
+		cout << " If you want to return back to the main page press (B)" << endl;
+		cin >> tryAgain;
 
 		if (tryAgain == "B") {
 			system("CLS");
 			goto ClientEntry;
 		}
-		
+
 		}
-				break;
-	
+		break;
+
 		case '6':
 		{	History.printNode(currentClient->clientData.clientHistory);
 
@@ -1023,7 +1063,7 @@ public:
 			goto ClientEntry;
 		}
 		}
-			break;
+		break;
 
 		case '7':
 		{	cout << "Your account has been closed successfully." << endl << " *********** Goodbye************"; }
@@ -1043,18 +1083,204 @@ void main() {
 	////client.listDBimport();
 	//client.listDBexport();
 	linker L;
+	char accountType;
 	L.listDBimport();
+	bool indicator2 = true;
+	while (indicator2) {
+		cout << "Please choose your account type: \n\t 1) Teller\n\t 2) Client\n\n\n";
+		accountType = _getch();
+		system("CLS");
+		if (accountType == '1') {
+
+			if (L.tellerLogin())cout << "Welcome...\n";
+			// while loop to goback to main page:
+			bool indicator = true;
+			while (indicator) {
+
+
+
+				cout << endl << " Kindly choose the number of the operation you want to make: " << endl
+					<< " 1) Create a New Account." << endl << " 2) Hold an Account. "
+					<< endl << " 3) Make a Transaction. " << endl << " 4) Query about a Loan."
+					<< endl << " 5) Check Client's Balance." << endl << " 6) Logout." << endl
+					<< " 7) Exit" << endl;
+
+				char operation = _getch();
+
+				switch (operation)
+				{
+				case '1': {
+					cout << endl << " Please enter Client's Name: ";
+					string name;
+					cin >> name;
+					cout << " Mobile Number: ";
+					string mob;
+					cin >> mob;
+					cout << " Client's Email: ";
+					string mail;
+					cin >> mail;
+					cout << " Client's Address: ";
+					string address;
+					cin >> address;
+					cout << " Client's Job: ";
+					string job;
+					cin >> job;
+					cout << " Client's Nationality: ";
+					string nationality;
+					cin >> nationality;
+					cout << " Client's Main Balance: ";
+					float  balance;
+					cin >> balance;
+					cout << " Client's Password: ";
+					string password;
+					cin >> password;
+					L.addClient(name,balance ,mob, mail, address, job, nationality, false, false,password);
+					system("CLS");
+					cout << "A new account has been created successfully.." << endl;
+					
+					break;
+				}
+				case '2': {
+					bool  loan;
+					bool  hold;
+					char getby;
+					cout << " Hold an account by Client's Name or ID : \n\t 1) ID  \n\t 2) Name\n";
+					cin.clear();
+					getby = _getch();
+					system("CLS");
+					if (getby == '1') {
+						int id;
+						cout << "Please enter the ID of the account you want to hold: ";
+						cin.ignore();
+						cin >> id;
+						clientNode *temp = L.searchListByID(id);
+						temp->setHold(true);
+					}
+					else if (getby == '2')
+					{
+						string name;
+						cout << "Please enter the Name of the account you want to hold: ";
+						cin >> name;
+						clientNode *temp = L.searchListByName(name);
+						temp->setHold(true);
+
+					}
+					cout << "\n Operation successful...Client account has been held\n";
+
+					break;
+				}
+
+				case '3':
+				{int ID1, ID2;
+				float amt;
+				bool trans = false;
+				clientNode* temp1, *temp2;
+				system("CLS");
+					cout << "\n enter client(1)'s ID:\n";
+					cin >> ID1;
+					temp1 = L.searchListByID(ID1);
+					cout << "\n enter client(2)'s ID:\n";
+					cin >> ID2;
+					temp2 = L.searchListByID(ID2);
+					cout << "\n enter amount to be transfared:\n";
+					cin >> amt;
+					system("CLS");
+					trans=L.transaction.transaction(&temp1->clientData.balance, &temp2->clientData.balance,amt);
+					if (trans)
+						cout << "transaction has been done successfully...\n";
+					else cout<<"sorry check your inputs\n";
+
+
+					break; }
+				case '4':
+				{
+					char getby;
+					cout << " Query about a Client's Loan by his name or ID : \n\t 1) ID  \n\t 2) Name\n";
+					cin.clear();
+					getby = _getch();
+					system("CLS");
+					if (getby == '1') {
+						int id;
+						cout << "Please enter the ID : ";
+						cin.ignore();
+						cin >> id;
+						clientNode *temp = L.searchListByID(id);
+						cout << temp->clientData.clientLoan->getLoan() << " L.E" << endl;
+					}
+					else if (getby == '2')
+					{
+						string name;
+						cout << "Please enter the Name: ";
+						cin >> name;
+						clientNode *temp = L.searchListByName(name);
+						cout << temp->clientData.clientLoan->getLoan() << " L.E" << endl;
+
+					}
+					break;
+				}
+				case '5':
+				{
+					char getby;
+					cout << " Check Client's Balance by his name or ID : \n\t 1) ID  \n\t 2) Name\n";
+					cin.clear();
+					getby = _getch();
+					system("CLS");
+					if (getby == '1') {
+						int id;
+						cout << "Please enter the ID : ";
+						cin.ignore();
+						cin >> id;
+						clientNode *temp = L.searchListByID(id);
+						cout << temp->clientData.balance << " L.E" << endl;
+					}
+					else if (getby == '2')
+					{
+						string name;
+						cout << "Please enter the Name: ";
+						cin >> name;
+						clientNode *temp = L.searchListByName(name);
+						cout << temp->clientData.balance << " L.E" << endl;
+
+					}
+					break;
+				}
+
+				case '6':
+				{  system("CLS");
+				indicator = false;
+				break; }
+				case '7':
+				{   system("CLS");
+				indicator = false;
+				indicator2 = false;
+				break;
+				}
+
+				default:
+					break;
+				}
+			}
+
+		}
+		else if (accountType == '2') {
+			L.loginClient();
+			L.viewClient();
+		}
+	}
+
+	//	linker L;
+	//	L.listDBimport();
+
 	//L.searchid(8);
-	
-	L.addClient("Ahmed1",0, "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true,"546464");
-	L.addClient("Ahmed2",0, "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true,"5646464");
-	L.addClient("Ahmed2",0, "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true,"64646464");
-	L.addClient("Ahmed2",0, "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true,"2121212");
 
+		/*L.addClient("Ahmed1",0, "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true,"546464");
+		L.addClient("Ahmed2",0, "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true,"5646464");
+		L.addClient("Ahmed3",0, "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true,"64646464");
+		L.addClient("Ahmed4",0, "01235478952", "ahmed@gmail.com", "22 ahmed el khashab", "accountat", "egyptian", false, true,"2121212");
+*/
+	/*L.loginClient();
+	L.viewClient();*/
 
-//	L.loginClient();
-//	L.viewClient();
-	
 	L.listDBexport();
 	cout << "Done =)" << "\n";
 	system("pause");
